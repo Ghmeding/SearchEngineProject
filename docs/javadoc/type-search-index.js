@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"searchengine","l":"Calculator"},{"p":"searchengine","l":"FileSystem"},{"p":"searchengine","l":"InvertedIndex"},{"p":"searchengine","l":"PageWordInfo"},{"p":"searchengine","l":"QueryHandler"},{"p":"searchengine","l":"WebServer"}];updateSearchResults();
