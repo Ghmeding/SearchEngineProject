@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PageWordInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">PageWordInfo.java</span></div><h1>PageWordInfo.java</h1><pre class="source lang-java linenums">package searchengine;
+
+/**
+ * Used for keeping track of page data, in the inverted index
+ */
+public class PageWordInfo {
+    private String url;
+    private String title;
+    private int wordCount;
+    private double score;
+
+<span class="fc" id="L12">    private Calculator cal = Calculator.getInstance();</span>
+<span class="fc" id="L13">    private FileSystem fs = FileSystem.getInstance();</span>
+
+<span class="fc" id="L15">    public PageWordInfo(String url, String title) {</span>
+<span class="fc" id="L16">        this.url = url;</span>
+<span class="fc" id="L17">        this.title = title;</span>
+<span class="fc" id="L18">        this.wordCount = 1;</span>
+<span class="fc" id="L19">    }</span>
+
+    public Integer getWordCount() {
+<span class="fc" id="L22">        return this.wordCount;</span>
+    }
+
+    /**
+     * Increments the word count by one.
+     */
+    public void incrementWordCountByOne() {
+<span class="fc" id="L29">        wordCount++;</span>
+<span class="fc" id="L30">    }</span>
+
+    public String getTitle() {
+<span class="fc" id="L33">        return title;</span>
+    }
+
+    public String getUrl() {
+<span class="fc" id="L37">        return url;</span>
+    }
+
+    /**
+     * gets tfidf from the calculator
+     * 
+     * @param totalNumOfWords
+     * @param totalNumOfPagesWithWord
+     */
+    public void calFinalFreq_TfIdf(int totalNumOfWords, int totalNumOfPagesWithWord) {
+<span class="fc" id="L47">        this.score = cal.finalFrequency(wordCount, totalNumOfWords, fs.getNumPageInDataset(), totalNumOfPagesWithWord);</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * gets tf from the calculator
+     * 
+     * @param totalNumOfWords
+     */
+    public void calFinalFreq_Tf(int totalNumOfWords) {
+<span class="nc" id="L56">        this.score = cal.termFrequency(wordCount, totalNumOfWords);</span>
+<span class="nc" id="L57">    }</span>
+
+    public double getScore() {
+<span class="fc" id="L60">        return score;</span>
+    }
+
+    public void setScore(double tfidf) {
+<span class="fc" id="L64">        this.score = tfidf;</span>
+<span class="fc" id="L65">    }</span>
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L69">        final int prime = 31;</span>
+<span class="nc" id="L70">        int result = 1;</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        result = prime * result + ((url == null) ? 0 : url.hashCode());</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        result = prime * result + ((title == null) ? 0 : title.hashCode());</span>
+<span class="nc" id="L73">        return result;</span>
+    }
+
+    /**
+     * Checks if an object is equal based on url and title
+     * 
+     * @param obj
+     * @return boolean
+     */
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (this == obj)</span>
+<span class="nc" id="L85">            return true;</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (obj == null)</span>
+<span class="nc" id="L87">            return false;</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (getClass() != obj.getClass())</span>
+<span class="nc" id="L89">            return false;</span>
+<span class="fc" id="L90">        PageWordInfo other = (PageWordInfo) obj;</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">        if (url == null) {</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (other.url != null)</span>
+<span class="nc" id="L93">                return false;</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        } else if (!url.equals(other.url))</span>
+<span class="fc" id="L95">            return false;</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        if (title == null) {</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">            if (other.title != null)</span>
+<span class="nc" id="L98">                return false;</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        } else if (!title.equals(other.title))</span>
+<span class="nc" id="L100">            return false;</span>
+<span class="fc" id="L101">        double otherScore = other.getScore();</span>
+<span class="fc" id="L102">        setScore((otherScore + score));</span>
+<span class="fc" id="L103">        return true;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

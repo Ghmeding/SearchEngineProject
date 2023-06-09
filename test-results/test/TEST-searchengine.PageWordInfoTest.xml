@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="searchengine.PageWordInfoTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-18T13:04:20" hostname="LAPTOP-H0K0U6MD" time="0.002">
+  <properties/>
+  <testcase name="incrementWordCountByOne()" classname="searchengine.PageWordInfoTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

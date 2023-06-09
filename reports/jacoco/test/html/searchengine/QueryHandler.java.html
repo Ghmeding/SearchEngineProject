@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="da"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QueryHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">searchengine</a> &gt; <a href="index.source.html" class="el_package">searchengine</a> &gt; <span class="el_source">QueryHandler.java</span></div><h1>QueryHandler.java</h1><pre class="source lang-java linenums">package searchengine;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Used for handling queries
+ */
+public class QueryHandler {
+  private HashMap&lt;String, HashMap&lt;String, PageWordInfo&gt;&gt; index;
+  InvertedIndex invertedIndex;
+
+<span class="fc" id="L14">  public QueryHandler(String filename) {</span>
+    // Creates an index of the relevant words in the dataset as a hashmap
+<span class="fc" id="L16">    this.invertedIndex = new InvertedIndex(filename);</span>
+<span class="fc" id="L17">    this.index = invertedIndex.getIndex();</span>
+<span class="fc" id="L18">  }</span>
+
+  /**
+   * Gets the web pages matching a search term (no possibility for AND and OR
+   * searches)
+   * 
+   * @param searchTerm The search term to find matching pages for
+   * @return ArrayList&lt;PageWordInfo&gt; The ArrayList containing the matching pages
+   */
+  public ArrayList&lt;PageWordInfo&gt; getMatchingWebPagesForOneSearchTerm(String searchTerm) {
+<span class="fc" id="L28">    ArrayList&lt;PageWordInfo&gt; response = new ArrayList&lt;PageWordInfo&gt;();</span>
+    HashMap&lt;String, PageWordInfo&gt; indexResult;
+<span class="fc bfc" id="L30" title="All 2 branches covered.">    if (index.containsKey(searchTerm)) {</span>
+<span class="fc" id="L31">      indexResult = index.get(searchTerm);</span>
+    } else {
+<span class="fc" id="L33">      return response;</span>
+    }
+<span class="fc bfc" id="L35" title="All 2 branches covered.">    for (Map.Entry&lt;String, PageWordInfo&gt; entry : indexResult.entrySet()) {</span>
+<span class="fc" id="L36">      entry.getValue().calFinalFreq_TfIdf(invertedIndex.getWordCountInPage().get(entry.getValue().getUrl()),</span>
+<span class="fc" id="L37">          indexResult.size());</span>
+<span class="fc" id="L38">      response.add(entry.getValue());</span>
+<span class="fc" id="L39">    }</span>
+<span class="fc" id="L40">    return response;</span>
+  }
+
+  /**
+   * Gets the web pages matching a search query (Possibility for AND searches but
+   * not for OR searches)
+   * 
+   * @param searchTerm The search term to find matching pages for
+   * @return ArrayList&lt;PageWordInfo&gt; The ArrayList containing the matching pages
+   */
+  public ArrayList&lt;PageWordInfo&gt; getMatchingWebPagesFor_AND_Searches(String query) {
+<span class="fc" id="L51">    String[] searchTerms = query.split(&quot;%20&quot;); // %20 is equal to space</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    if (searchTerms.length == 1) {</span>
+<span class="fc" id="L53">      return getMatchingWebPagesForOneSearchTerm(searchTerms[0]);</span>
+    }
+<span class="fc" id="L55">    ArrayList&lt;PageWordInfo&gt; matchingWebPages = new ArrayList&lt;PageWordInfo&gt;(); // For final results</span>
+<span class="fc" id="L56">    ArrayList&lt;PageWordInfo&gt; checkingForMatchingResponses = new ArrayList&lt;&gt;(); // Temporary storage for matches for one</span>
+                                                                              // or more search terms
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    for (String searchTerm : searchTerms) {</span>
+<span class="fc" id="L59">      ArrayList&lt;PageWordInfo&gt; searchTermMatches = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L60">      searchTermMatches = getMatchingWebPagesForOneSearchTerm(searchTerm);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">      for (PageWordInfo searchTermMatch : searchTermMatches) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        if (checkingForMatchingResponses.contains(searchTermMatch)) {</span>
+<span class="fc" id="L63">          matchingWebPages.add(searchTermMatch);</span>
+<span class="fc" id="L64">          continue;</span>
+        }
+<span class="fc" id="L66">        checkingForMatchingResponses.add(searchTermMatch);</span>
+<span class="fc" id="L67">      }</span>
+    }
+<span class="fc" id="L69">    return matchingWebPages;</span>
+  }
+
+  /**
+   * Gets the web pages matching a search query (Possibility for both AND and OR
+   * searches)
+   * 
+   * @param searchTerm The search term to find matching pages for
+   * @return ArrayList&lt;PageWordInfo&gt; The ArrayList containing the matching pages
+   */
+  public ArrayList&lt;PageWordInfo&gt; getMatchingWebPagesFor_AND_and_OR_Searches(String query) {
+<span class="fc" id="L80">    ArrayList&lt;PageWordInfo&gt; matchingWebPages = new ArrayList&lt;PageWordInfo&gt;(); // For final results</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">    if (query == null) {</span>
+<span class="nc" id="L82">      return matchingWebPages;</span>
+    }
+<span class="fc" id="L84">    String[] searchTerms = query.split(&quot;%20or%20&quot;); // %20 is equal to space</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">    if (searchTerms.length == 1) {</span>
+<span class="fc" id="L86">      return getMatchingWebPagesFor_AND_Searches(searchTerms[0]);</span>
+    }
+<span class="fc bfc" id="L88" title="All 2 branches covered.">    for (String searchTerm : searchTerms) {</span>
+<span class="fc" id="L89">      ArrayList&lt;PageWordInfo&gt; searchTermMatches = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L90">      searchTermMatches = getMatchingWebPagesFor_AND_Searches(searchTerm);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">      for (PageWordInfo searchTermMatch : searchTermMatches) {</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (matchingWebPages.contains(searchTermMatch)) {</span>
+<span class="fc" id="L93">          continue;</span>
+        }
+<span class="fc" id="L95">        matchingWebPages.add(searchTermMatch);</span>
+<span class="fc" id="L96">      }</span>
+    }
+<span class="fc" id="L98">    return matchingWebPages;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

@@ -1,0 +1,12 @@
+-classpath 'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\build\\classes\\java\\main;C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\build\\resources\\main'
+-d 'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\build\\docs\\javadoc'
+-doctitle 'searchengine API'
+-notimestamp 
+-quiet 
+-windowtitle 'searchengine API'
+'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\src\\main\\java\\searchengine\\Calculator.java'
+'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\src\\main\\java\\searchengine\\FileSystem.java'
+'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\src\\main\\java\\searchengine\\InvertedIndex.java'
+'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\src\\main\\java\\searchengine\\PageWordInfo.java'
+'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\src\\main\\java\\searchengine\\QueryHandler.java'
+'C:\\Users\\thoma\\Desktop\\Alt det gode\\ITU\\1. semester\\Programmering\\GP22-group33\\src\\main\\java\\searchengine\\WebServer.java'
